@@ -1,0 +1,107 @@
+Setting up the database
+
+1. Install SQLTools/MariaDB extension in vs code
+2. Download and Install MYSQL software in your system
+
+- do all these in VSCode - 
+3. ctrl + shift + p --> SQLTools Management: Add New Connection
+4. select MySQL
+5. Server: localhost
+   Port: 3306
+   Username: root
+   Database: lab_management_system
+   Connection Name: Lab Management DB
+6. ctrl + shift + p --> SQLTools: Connect 
+{use password companyA123}
+7. create database.sql file in your directory and do following (delete and run on active connection) one after another
+8.1. Create Database
+
+Run the following:
+
+CREATE DATABASE lab_management_system;
+
+8.2. Select Database
+
+Run:
+
+USE lab_management_system;
+
+8.3. Create Tables
+
+-- USERS
+CREATE TABLE users (
+user_id INT AUTO_INCREMENT PRIMARY KEY,
+username VARCHAR(100),
+email VARCHAR(100) UNIQUE,
+password TEXT,
+role VARCHAR(20)
+);
+
+-- EQUIPMENT
+CREATE TABLE equipment (
+equipment_id INT AUTO_INCREMENT PRIMARY KEY,
+name VARCHAR(100),
+description TEXT,
+image_url TEXT,
+status VARCHAR(20)
+);
+
+-- LABS
+CREATE TABLE labs (
+lab_id INT AUTO_INCREMENT PRIMARY KEY,
+lab_name VARCHAR(100),
+location VARCHAR(100),
+status VARCHAR(20)
+);
+
+-- RESERVATIONS
+CREATE TABLE reservations (
+reservation_id INT AUTO_INCREMENT PRIMARY KEY,
+user_id INT,
+equipment_id INT,
+lab_id INT,
+start_time DATETIME,
+end_time DATETIME,
+status VARCHAR(20),
+FOREIGN KEY (user_id) REFERENCES users(user_id),
+FOREIGN KEY (equipment_id) REFERENCES equipment(equipment_id),
+FOREIGN KEY (lab_id) REFERENCES labs(lab_id)
+);
+
+-- ISSUES
+CREATE TABLE issues (
+issue_id INT AUTO_INCREMENT PRIMARY KEY,
+user_id INT,
+equipment_id INT,
+description TEXT,
+status VARCHAR(20),
+created_at DATETIME,
+FOREIGN KEY (user_id) REFERENCES users(user_id),
+FOREIGN KEY (equipment_id) REFERENCES equipment(equipment_id)
+);
+
+-- REQUESTS
+CREATE TABLE requests (
+request_id INT AUTO_INCREMENT PRIMARY KEY,
+user_id INT,
+item_name VARCHAR(100),
+description TEXT,
+status VARCHAR(20),
+created_at DATETIME,
+FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
+
+8.4. Verify Tables
+
+Run:
+
+SHOW TABLES;
+
+8.45. Connect Backend Code
+
+Use the following connection configuration:
+
+Host: localhost
+User: root
+Password: companyA123
+Database: lab_management_system
